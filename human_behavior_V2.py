@@ -25,13 +25,18 @@ def analyze_pose_for_fight(kp1, kp2, frame_width, frame_height):
     def close(p1, p2, ratio):
         return calculate_keypoint_distance(p1, p2) < frame_width * ratio
 
+    #kp1 and kp2 is person1 and person2
+
     # Right wrist to nose
     if visible(kp1[10]) and visible(kp2[0]) and close(kp1[10], kp2[0], 0.07):
         indicators += 1
+    #kp1[10] = werists(Right), kp1[9] = werists(Left)
     # Left wrist to neck
     if visible(kp1[9]) and visible(kp2[5]) and visible(kp2[6]):
         neck = [(kp2[5][0] + kp2[6][0]) / 2, (kp2[5][1] + kp2[6][1]) / 2]
         if close(kp1[9], neck, 0.07): indicators += 1
+    # kp1[0] = Nose
+    # kp1[5][6] = shoulders
     # Right wrist to nose (person 2 to person 1)
     if visible(kp2[10]) and visible(kp1[0]) and close(kp2[10], kp1[0], 0.07):
         indicators += 1
@@ -44,6 +49,7 @@ def analyze_pose_for_fight(kp1, kp2, frame_width, frame_height):
         mid1 = [(kp1[11][0] + kp1[12][0]) / 2, (kp1[11][1] + kp1[12][1]) / 2]
         mid2 = [(kp2[11][0] + kp2[12][0]) / 2, (kp2[11][1] + kp2[12][1]) / 2]
         if close(mid1, mid2, 0.15): indicators += 1
+    # kp[11][12] = Hips(Left, Right)
 
     return indicators >= 3
 
